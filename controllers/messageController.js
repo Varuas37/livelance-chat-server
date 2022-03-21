@@ -1,12 +1,25 @@
 const Messages = require("../models/messageModel");
+const Users = require("../models/userModel");
 
 module.exports.getMessages = async (req, res, next) => {
   try {
-    const { from, to } = req.body;
+    // TODO prolly wanna refactor this to be more secure
+    // right now this endpoint gets the messages between any two user ids 
+    // i.e. without security logic, u can fetch anyone two peoples message history
+    // refactor so from value comes from http header/session/jwt
+
+    const { from, to, email } = req.body;
+
+    if(email && !to){
+      const foundUserId = await Users.findOne({
+        email,
+      })._id
+      console.log("Found user", findUser);
+    }
 
     const messages = await Messages.find({
       users: {
-        $all: [from, to],
+        $all: [from, foundUserId || to],
       },
     }).sort({ updatedAt: 1 });
 
