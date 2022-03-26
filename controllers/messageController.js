@@ -53,7 +53,7 @@ module.exports.addMessage = async (req, res, next) => {
     next(ex);
   }
 };
-
+//gets users that Current User have messaged
 module.exports.getContacts = async (req, res, next) => {
   try {
     
